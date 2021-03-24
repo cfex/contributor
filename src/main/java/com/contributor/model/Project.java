@@ -1,8 +1,7 @@
 package com.contributor.model;
 
 import com.contributor.model.enumeration.DevStatus;
-import com.contributor.model.user.Contributor;
-import com.contributor.model.user.Host;
+import com.contributor.model.user.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -39,12 +38,14 @@ public class Project implements Comparable<Project> {
     @Column(name = "description", nullable = false, length = 1000)
     private String description;
 
+    @Builder.Default
     @Column(name = "dev_status")
     @Enumerated
-    private DevStatus developmentStatus;
+    private DevStatus developmentStatus = DevStatus.OPEN;
 
+    @Builder.Default
     @Column(name = "published")
-    private Boolean published;
+    private Boolean published = false;
 
     @Builder.Default
     @ManyToMany(mappedBy = "projects")
@@ -62,14 +63,11 @@ public class Project implements Comparable<Project> {
     private LocalDate updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Contributor host;
+    private User host;
 
     @Builder.Default
-    @ManyToMany
-    @JoinTable(name = "contributor_projects",
-            joinColumns = @JoinColumn(name = "contributor_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"))
-    private List<Contributor> contributors = new ArrayList<>();
+    @ManyToMany(mappedBy = "projects")
+    private List<User> contributors = new ArrayList<>();
 
     @Builder.Default
     @Setter(AccessLevel.NONE)

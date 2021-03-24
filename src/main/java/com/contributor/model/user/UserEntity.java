@@ -4,12 +4,14 @@ import com.contributor.model.Authority;
 import com.contributor.model.Comment;
 import com.contributor.model.enumeration.AccountStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.persistence.*;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
@@ -20,7 +22,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET active = 0 WHERE id = ?", check = ResultCheckStyle.COUNT)
 @Where(clause = "active <> 'INACTIVE'")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -52,6 +53,9 @@ public abstract class UserEntity implements Comparable<UserEntity> {
     @Lob
     @Column(name = "bio", length = 500)
     private String bio;
+
+    @Column(name = "school")
+    private String school;
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
