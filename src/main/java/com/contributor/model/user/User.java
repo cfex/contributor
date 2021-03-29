@@ -3,12 +3,13 @@ package com.contributor.model.user;
 import com.contributor.model.Project;
 import com.contributor.model.enumeration.AccountLevel;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor

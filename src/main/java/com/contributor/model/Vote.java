@@ -1,6 +1,6 @@
 package com.contributor.model;
 
-import com.contributor.model.user.UserEntity;
+import com.contributor.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +32,7 @@ public class Vote {
     private LocalDateTime votedOn;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private UserEntity voter;
+    private User voter;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;

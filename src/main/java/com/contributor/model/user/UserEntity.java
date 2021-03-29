@@ -1,24 +1,20 @@
 package com.contributor.model.user;
 
 import com.contributor.model.Authority;
-import com.contributor.model.Comment;
 import com.contributor.model.enumeration.AccountStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.*;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.*;
-import javax.validation.constraints.Past;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+@SuperBuilder
 @Data
 @NoArgsConstructor
 @Entity
@@ -32,23 +28,22 @@ public abstract class UserEntity implements Comparable<UserEntity> {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Version
-    @Column(name = "version", nullable = false, insertable = false)
-    private int version;
+    @Column(nullable = false, unique = true)
+    private String userId;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "nickname")
     private String nickname;
 
     @Column(name = "birth_date", updatable = false)
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    @Past
-    private LocalDate birthDate;
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "dd-MM-yyyy", shape = JsonFormat.Shape.STRING)
+    private Date birthDate;
 
     @Lob
     @Column(name = "bio", length = 500)
@@ -71,20 +66,26 @@ public abstract class UserEntity implements Comparable<UserEntity> {
     @UpdateTimestamp
     private LocalDateTime updateDate;
 
+    @Builder.Default
     @Column
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private AccountStatus active = AccountStatus.ACTIVE;
+
+    @Column
+    private String emailVerificationToken;
+
+    @Builder.Default
+    @Column(nullable = false)
+    private Boolean emailVerificationStatus = false;
 
     //Disabling setter for authorities, because we want to send only one parameter.
     @Setter(AccessLevel.NONE)
+    @Builder.Default
     @ManyToMany
     @JoinTable(name = "user_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities = new ArrayList<>();
-
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<>();
 
     /**
      * Used for setting authority for UserEntity

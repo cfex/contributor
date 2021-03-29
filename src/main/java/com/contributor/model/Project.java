@@ -24,6 +24,9 @@ public class Project implements Comparable<Project> {
     @Column(nullable = false, updatable = false, unique = true)
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String projectId;
+
     @Version
     @Column(name = "version", insertable = false)
     private int version;
