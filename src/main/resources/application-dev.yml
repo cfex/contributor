@@ -16,3 +16,20 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: test.za.javu.smtp@gmail.com
+    password: testjava123
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
+          starttls:
+            enable: true
+    test-connection: false
+
