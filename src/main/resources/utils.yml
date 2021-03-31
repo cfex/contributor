@@ -1,0 +1,5 @@
+secure:
+  rendom:
+    length: 15
+token:
+  expiration-time: 1440

@@ -1,4 +1,6 @@
 spring:
+  web:
+    locale: US
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/contributordb?useSSL=false&allowPublicKeyRetrieval=true
@@ -32,4 +34,5 @@ spring:
           starttls:
             enable: true
     test-connection: false
+
 
