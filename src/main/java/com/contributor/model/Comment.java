@@ -1,33 +1,31 @@
 package com.contributor.model;
 
 import com.contributor.model.user.UserEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "comments")
 public class Comment implements Comparable<Comment> {
 
     @Column(nullable = false, updatable = false, unique = true)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Version
-    @Column(name = "version", insertable = false)
-    private int version;
 
     @Column(length = 500, updatable = false)
     private String text;
 
     @Column(name = "created_at", nullable = false, updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)

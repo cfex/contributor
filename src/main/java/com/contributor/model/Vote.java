@@ -1,31 +1,25 @@
 package com.contributor.model;
 
 import com.contributor.model.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Builder
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "votes")
 public class Vote {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false, unique = true)
     private Long id;
-
-    @Version
-    @Column(name = "version", nullable = false, insertable = false)
-    private int version;
 
     @CreationTimestamp
     @Column(name = "voted_on")
@@ -37,3 +31,4 @@ public class Vote {
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 }
+
