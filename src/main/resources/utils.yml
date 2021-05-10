@@ -1,5 +1,5 @@
 secure:
   rendom:
-    length: 15
+    length: 30
 token:
   expiration-time: 1440
