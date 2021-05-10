@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments/header :: header(~{::link})">
+    <link rel="stylesheet" th:href="@{../css/card.css}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container cards-index">
+    <h2>Search filter</h2>
+    <div class="row" th:each="project : ${projects}">
+        <div class="col-12">
+            <div class="card card-base">
+                <div class="card-box card-body">
+                    <h4 class="card-title" th:text="${project.title}">Title</h4>
+                    <p class="card-text" th:text="${project.intro}"></p>
+                    <a th:href="@{'/projects/' + ${project.projectId} + '/details'}" class="card-link">Read more</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>
