@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.com" lang="en">
+<head th:replace="fragments/header :: header(~{::link})">
+    <link rel="stylesheet" th:href="@{../css/post-text.css}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+            <h1>LOGIN</h1>
+            <form action="" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <input type="text" placeholder="Username" name="username" id="username"
+                       aria-describedby="username"
+                       required>
+                <input type="password" placeholder="Password" name="password" id="password"
+                       required>
+                <button type="submit" class="base-btn btn-lg">Log in</button>
+                <button type="button" id="createAccount" class="base-btn btn-lg">
+                    <a href='/auth/registration'>Create Account</a>
+                </button>
+            </form>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>
