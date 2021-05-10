@@ -1,0 +1,51 @@
+.card {
+    height: auto;
+    background-color: rgba(49, 67, 104, 0.57);
+    border: unset;
+    margin-bottom: 2rem;
+    color: #e5e5e5;
+}
+
+.card-title {
+    color: #fca311;
+    font-size: 24px;
+    margin-bottom: 0;
+}
+
+.devStatus {
+    color: #00be22;
+}
+
+.cards-index {
+    padding: 20px;
+}
+
+.card-box:hover {
+    cursor: pointer;
+}
+
+.card-text {
+    padding: 15px;
+}
+
+.table {
+    display: table;
+    margin: 0 auto;
+}
+
+.table a {
+    color: #e5e5e5;
+}
+
+ul#horizontal-list {
+    list-style: none;
+    padding-top: 20px;
+}
+ul#horizontal-list li {
+    display: inline;
+}
+
+.horizontal button {
+    height: 30px;
+    padding: 30px;
+}

@@ -1,0 +1,41 @@
+.profile-details-list {
+    list-style: none;
+    padding: 10px;
+    color: #e5e5e5;
+}
+
+.profile-level {
+    color: #fca311;
+}
+
+.ideas-list {
+    padding: 20px;
+    margin-top: 5rem;
+}
+
+.ideas-list-title {
+    padding: 15px;
+    text-align: center;
+}
+
+.ideas-list a {
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.profile-avatar {
+    width: 200px;
+    height: 200px;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    background: #fca311;
+}
+
+.score {
+    color: #FF6200;
+    text-align: center;
+    font-size: 30px;
+}

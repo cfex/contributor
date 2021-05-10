@@ -1,0 +1,69 @@
+.index-card {
+    margin-top: 5%;
+    height: 100px;
+}
+
+.search-container {
+    height: 200px;
+    padding: 20px;
+    width: 100%;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 10px;
+}
+
+.index-card:hover {
+    cursor: pointer;
+}
+
+.index-card-text {
+    padding: 5px;
+    margin-top: 20px;
+    font-size: 40px;
+    color: #ffffff;
+}
+
+.popular-card {
+    height: 300px;
+    width: 400px;
+    margin: 0 auto;
+    padding: 15px;
+    box-shadow: -17px 0 18px 0 rgba(0, 0, 0, 0.22);
+}
+
+.popular-card:hover {
+    cursor: pointer;
+    box-shadow: -17px 0 18px 0 rgba(90, 90, 90, 0.22);
+}
+
+.popular-wrapper {
+    height: 400px;
+    margin-top: 20px;
+    color: #e5e5e5;
+}
+
+.popular-title {
+    color: #fca311;
+    padding: 10px;
+    font-size: 24px;
+    text-transform: uppercase;
+}
+
+.explore {
+    padding: 20px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.small-text {
+    color: #e5e5e5;
+    font-size: 12px;
+}
+
+.spec-char {
+    color: #14213d;
+    font-size: 50px;
+    font-weight: bold;
+}
