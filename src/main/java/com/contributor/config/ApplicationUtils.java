@@ -13,10 +13,7 @@ import java.util.Random;
 public class ApplicationUtils {
 
     @Value("${length}")
-    private int defaultLength; //15
-
-//    @Value("${expiration-time}")
-//    private int expirationTime; //(1440 == 24h)
+    private int defaultLength; //30
 
     private final Random RANDOM = new SecureRandom();
     private final String ALPHABET = "01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghjklmnopqrstuvwxyz";
