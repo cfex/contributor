@@ -6,7 +6,7 @@ import com.contributor.model.verification.VerificationToken;
 import java.util.concurrent.CompletableFuture;
 
 public interface EmailVerificationService {
-    void sendMail(CompletableFuture<VerificationToken> verificationToken, String recipient, RegistrationCompleteEvent event);
+    void sendMail(CompletableFuture<VerificationToken> verificationToken, String recipientEmail, RegistrationCompleteEvent event);
 
     boolean isEmailValid(String email);
 }
