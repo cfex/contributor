@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.*;
 
+import javax.persistence.Cache;
 import javax.persistence.Entity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,8 +16,11 @@ import java.util.Date;
 import java.util.List;
 
 @SuperBuilder
-@Data
+@EqualsAndHashCode
+@AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @SQLDelete(sql = "UPDATE users SET active = 0 WHERE id = ?", check = ResultCheckStyle.COUNT)
 @Where(clause = "active <> 'INACTIVE'")
@@ -25,7 +29,7 @@ public abstract class UserEntity implements Comparable<UserEntity> {
 
     @Id
     @Column(nullable = false, updatable = false, unique = true)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     @Column(nullable = false, unique = true)
