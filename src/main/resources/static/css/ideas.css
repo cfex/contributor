@@ -1,0 +1,41 @@
+html {
+    font-family: 'Roboto', sans-serif;
+}
+
+.single-page {
+    margin-top: 5rem;
+}
+
+.description-area {
+    margin-top: 15%;
+    font-size: 20px;
+    text-align: left;
+}
+
+.comment {
+    border-bottom: 1px solid #4b4a47;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.author {
+    color: #4b4a47;
+    font-style: italic;
+}
+
+.created_at {
+    font-size: 18px;
+    float: right;
+    color: #4b4a47;
+}
+
+.comment-text {
+    font-size: 15px;
+}
+
+
+.up {
+    padding: 4px;
+    font-size: 25px;
+    color: green;
+}

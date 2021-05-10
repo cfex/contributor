@@ -1,0 +1,15 @@
+.comment {
+    color: #e5e5e5;
+    padding: 10px;
+    margin: 5px;
+    border-bottom: 1px solid rgba(194, 194, 194, 0.4);
+}
+
+.comment-creation {
+    padding: 5px;
+}
+
+.contributors {
+    padding: 15px;
+    margin: 10px 0 auto;
+}

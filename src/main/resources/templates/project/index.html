@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="fragments/header :: header(~{::link})">
+    <link rel="stylesheet" th:href="@{../css/card.css}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container cards-index">
+    <div class="row" th:each="project : ${projects}">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <div class="card">
+                <div class="card-box card-body">
+                    <p class="card-title" th:text="${project.title}"></p>
+                    <small class="text-muted" th:text="'#' + ${project.projectId}"></small>
+                    <br>
+                    <p class="devStatus" th:text="${project.devStatus}"></p>
+                    <p th:text="${project.intro}">Card subtitle</p>
+                </div>
+                <div class="table">
+                    <ul id="horizontal-list">
+                        <li>
+                            <button class="base-btn btn-sm"><a
+                                    th:href="@{'/projects/' + ${project.projectId} + '/details'}">Read more</a></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>

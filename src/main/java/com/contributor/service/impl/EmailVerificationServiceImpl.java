@@ -14,6 +14,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
@@ -29,16 +31,15 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     @SneakyThrows
     @Override
     @Async
-    public void sendMail(CompletableFuture<VerificationToken> verificationToken, String recipient, RegistrationCompleteEvent event) {
+    public void sendMail(CompletableFuture<VerificationToken> verificationToken, String recipientEmail, RegistrationCompleteEvent event) {
         LOGGER.info("Creating mail on -> {}", Thread.currentThread().getName());
-        if (isEmailValid(recipient)) {
+        if (isEmailValid(recipientEmail)) {
             String subject = "Registration Confirmation";
             String confirmationURL = event.getApplicationURL() + "/registrationConfirm?token=" + verificationToken.get().getToken();
             String message = "Please click on the link below:";
-
             SimpleMailMessage emailMessage = new SimpleMailMessage();
-            emailMessage.setFrom("Contributor app");
-            emailMessage.setTo(recipient);
+//            emailMessage.setFrom();
+            emailMessage.setTo(recipientEmail);
             emailMessage.setSubject(subject);
             emailMessage.setText(message + "\r\n" + "http://localhost:8080/auth" + confirmationURL);
             mailSender.send(emailMessage);
@@ -50,8 +51,14 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     @Override
     public boolean isEmailValid(String email) {
         LOGGER.info("Verifying mail");
-        String emailRegex = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
-        Pattern pattern = Pattern.compile(emailRegex, Pattern.CASE_INSENSITIVE);
-        return pattern.matcher(email).matches();
+        boolean result = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            result = false;
+        }
+
+        return result;
     }
 }

@@ -1,6 +1,10 @@
 spring:
+  messages:
+    basename: messages
+    encoding: UTF-8
+    always-use-message-format: false
   web:
-    locale: US
+    locale: en
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/contributordb?useSSL=false&allowPublicKeyRetrieval=true
@@ -34,5 +38,4 @@ spring:
           starttls:
             enable: true
     test-connection: false
-
 

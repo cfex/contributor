@@ -3,35 +3,41 @@ package com.contributor.model;
 import com.contributor.model.enumeration.DevStatus;
 import com.contributor.model.user.User;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Builder
-@Data
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "projects")
+@NaturalIdCache
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Project implements Comparable<Project> {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false, unique = true)
     private Long id;
 
     @Column(nullable = false, unique = true)
     private String projectId;
 
-    @Version
-    @Column(name = "version", insertable = false)
-    private int version;
-
-    @Column(name = "name", nullable = false, unique = true)
+    @NaturalId
+    @Column(name = "title", nullable = false, unique = true)
     private String title;
 
     @Column(name = "intro", nullable = false)
@@ -43,16 +49,12 @@ public class Project implements Comparable<Project> {
 
     @Builder.Default
     @Column(name = "dev_status")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private DevStatus developmentStatus = DevStatus.OPEN;
 
     @Builder.Default
     @Column(name = "published")
     private Boolean published = false;
-
-    @Builder.Default
-    @ManyToMany(mappedBy = "projects")
-    private List<Stack> stack = new ArrayList<>();
 
     @Column(name = "github_url")
     private String github_url;
@@ -69,8 +71,8 @@ public class Project implements Comparable<Project> {
     private User host;
 
     @Builder.Default
-    @ManyToMany(mappedBy = "projects")
-    private List<User> contributors = new ArrayList<>();
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<ProjectContributors> contributors = new ArrayList<>();
 
     @Builder.Default
     @Setter(AccessLevel.NONE)
@@ -79,6 +81,10 @@ public class Project implements Comparable<Project> {
 
     public void addComment(Comment comment) {
         this.comments.add(comment);
+    }
+
+    public void addContributor(ProjectContributors user) {
+        this.contributors.add(user);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.contributor.payload.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,8 +39,10 @@ public class UserRegisterRequest {
 
     private String school;
 
+    @NotNull
     @Past
     @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date birthDate;
 
     @NotNull
