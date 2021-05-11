@@ -53,7 +53,7 @@ public class AuthController {
 
     @PostMapping(value = "/registration")
     public ModelAndView register(@ModelAttribute("userRegisterRequest") @Valid UserRegisterRequest registerRequest,
-                                 BindingResult result, WebRequest request) {
+                                 WebRequest request) {
 
         Locale locale = request.getLocale();
         try {
