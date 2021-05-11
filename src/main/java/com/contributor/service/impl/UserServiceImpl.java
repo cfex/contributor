@@ -15,6 +15,7 @@ import com.contributor.service.UserService;
 import com.contributor.shared.UserDto;
 import com.contributor.config.ApplicationUtils;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetailsResponse findByUserIdAndRetrieveOnlyPublished(String userId) {
+    public UserDetailsResponse findByUsernameAndRetrieveOnlyPublished(String userId) {
         User user = userDao.findByUserId(userId).orElseThrow();
 
         List<ProjectResponseMinified> hosted = user.getHosted().stream()
@@ -52,6 +53,7 @@ public class UserServiceImpl implements UserService {
         return map;
     }
 
+    @SneakyThrows
     @Override
     @Transactional
     public UserDetailsResponse createUser(UserDto userDto) {
