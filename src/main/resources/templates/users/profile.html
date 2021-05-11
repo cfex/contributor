@@ -9,28 +9,27 @@
 
 <div class="container cards-index">
     <div class="row">
-        <div class="col-6">
+        <div class="col-3">
             <div class="profile-avatar">
-                <div class="avatar"></div>
-            </div>
-            <div class="card">
-                <div class="table">
-                    <ul class="list-group profile-details-list">
-                        <li th:text="'Name: ' + ${user.name}"></li>
-                        <li th:text="'Username: ' + ${user.username}"></li>
-                        <li th:text="'Nickname: ' + ${user.nickname}"></li>
-                        <li th:text="'Email: ' + ${user.email}"></li>
-                        <li th:text="'School: ' + ${user.school}"></li>
-                        Account Level:
-                        <li class="profile-level" th:text="${user.accountLevel}"></li>
-                    </ul>
+                <div class="avatar">
+                    <img th:src="${user.avatar}" alt="Avatar">
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-3"></div>
-        <div class="col-6 published-projects">
+        <div class="col-4">
+            <div class="table">
+                <ul class="list-group profile-details-list">
+                    <li th:text="'Name: ' + ${user.name}"></li>
+                    <li th:text="'Username: ' + ${user.username}"></li>
+                    <li th:text="'Nickname: ' + ${user.nickname}"></li>
+                    <li th:text="'Email: ' + ${user.email}"></li>
+                    <li th:text="'School: ' + ${user.school}"></li>
+                    <li class="profile-level" th:text="'Account level: '+ ${user.accountLevel}"></li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="col-5 published-projects">
             Published projects
             <div class="table">
                 <ul class="profile-details-list" th:each="project : ${user.hosted}">
@@ -45,6 +44,10 @@
                 </ul>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-3"></div>
+
         <div class="col-3"></div>
     </div>
 </div>

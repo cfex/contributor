@@ -1,5 +1,6 @@
 package com.contributor.service.impl;
 
+import com.contributor.config.AvatarGenerator;
 import com.contributor.dao.AuthorityDao;
 import com.contributor.dao.UserDao;
 import com.contributor.exception.AccountAlreadyExistsException;
@@ -14,14 +15,12 @@ import com.contributor.service.UserService;
 import com.contributor.shared.UserDto;
 import com.contributor.config.ApplicationUtils;
 import lombok.AllArgsConstructor;
-import org.dom4j.rule.Mode;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -40,8 +39,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetailsResponse findByUsernameAndRetrieveOnlyPublished(String username) {
-        User user = userDao.findByUsernameIgnoreCase(username).orElseThrow();
+    public UserDetailsResponse findByUserIdAndRetrieveOnlyPublished(String userId) {
+        User user = userDao.findByUserId(userId).orElseThrow();
 
         List<ProjectResponseMinified> hosted = user.getHosted().stream()
                 .filter(Project::getPublished)
@@ -59,10 +58,11 @@ public class UserServiceImpl implements UserService {
         if (userAlreadyExists(userDto.getUsername(), userDto.getEmail())) {
             throw new AccountAlreadyExistsException();
         }
-
+        String generatedUUID = utils.generateUUID();
         User userMap = modelMapper.map(userDto, User.class);
         userMap.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userMap.setUserId(utils.generateUUID());
+        userMap.setUserId(generatedUUID);
+        userMap.setAvatar(AvatarGenerator.generate(generatedUUID));
         userMap.setAuthority(authorityDao.findByAuthority(Authorities.ROLE_USER));
         User savedUser = userDao.save(userMap);
 

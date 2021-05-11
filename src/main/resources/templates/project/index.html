@@ -2,6 +2,8 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head th:replace="fragments/header :: header(~{::link})">
     <link rel="stylesheet" th:href="@{../css/card.css}">
+    <link rel="stylesheet" th:href="@{../css/project.css}">
+
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
@@ -17,12 +19,20 @@
                     <br>
                     <p class="devStatus" th:text="${project.devStatus}"></p>
                     <p th:text="${project.intro}">Card subtitle</p>
+
                 </div>
                 <div class="table">
                     <ul id="horizontal-list">
                         <li>
                             <button class="base-btn btn-sm"><a
                                     th:href="@{'/projects/' + ${project.projectId} + '/details'}">Read more</a></button>
+                        </li>
+                        <li>
+                            <div class="host-avatar sm">
+                                <a th:href="'/users/' + ${project.host.userId} + '/profile'">
+                                    <img th:src="${project.host.avatar}" alt="Avatar">
+                                </a>
+                            </div>
                         </li>
                     </ul>
                 </div>
