@@ -1,6 +1,5 @@
 package com.contributor.payload.response;
 
-import com.contributor.model.Project;
 import com.contributor.model.enumeration.AccountLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +22,7 @@ public class UserDetailsResponse {
     private String school;
     private String email;
     private AccountLevel accountLevel;
+    private String avatar;
     @Builder.Default
     private List<ProjectResponseMinified> hosted = new ArrayList<>();
 }

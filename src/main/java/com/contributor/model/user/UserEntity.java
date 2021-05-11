@@ -2,12 +2,11 @@ package com.contributor.model.user;
 
 import com.contributor.model.Authority;
 import com.contributor.model.enumeration.AccountStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.*;
 
-import javax.persistence.Cache;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -43,6 +42,10 @@ public abstract class UserEntity implements Comparable<UserEntity> {
 
     @Column(name = "nickname")
     private String nickname;
+
+    @Lob
+    @Column(name = "avatar", length = 500)
+    private String avatar;
 
     @Column(name = "birth_date", updatable = false)
     @Temporal(TemporalType.DATE)

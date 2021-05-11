@@ -38,10 +38,13 @@
             <hr>
             <div class="row">
                 <div class="col-2 project_host">
-                    <p class="host_name" th:text="${project.host.name}"></p>
+                    <div class="host-avatar">
+                        <img th:src="${project.host.avatar}" alt="Avatar">
+                    </div>
                 </div>
                 <div class="col-8 project_host">
-                    <p class="host_bio" th:text="${project.host.bio}"></p>
+                    <p class="host_bio" th:text="${project.host.name}"></p>
+                    <small th:text="${project.host.bio}"></small>
                 </div>
             </div>
             <div class="comments">
@@ -59,10 +62,12 @@
     <div class="col-2"></div>
     <div class="comment" th:each="comment : ${project.comments}">
         <div class="row">
-            <div class="col-2">
-                <h3 th:text="${comment.author.username}"></h3>
+            <div class="col-1">
+                <div class="host-avatar sm">
+                    <img th:src="${comment.author.avatar}"/>
+                </div>
             </div>
-            <div class="col-10">
+            <div class="col-8">
                 <p class="comment-text" th:text="${comment.text}">text</p>
                 <small class="comment-creation"
                        th:text="${#temporals.format(comment.createdAt, 'dd-MM-yyyy HH:mm')}"></small>
