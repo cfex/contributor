@@ -1,21 +1,20 @@
-package com.contributor.payload.response;
+package com.contributor.payload.request;
 
 import com.contributor.model.enumeration.DevStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class ProjectResponseMinified {
-    private String projectId;
+public class ProjectUpdateRequest {
     private String title;
     private String intro;
     private String description;
     private DevStatus devStatus;
-    private LocalDateTime createdAt;
     private Boolean isPublished;
+    private String github_url;
 }

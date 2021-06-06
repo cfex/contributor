@@ -3,21 +3,20 @@ package com.contributor.model;
 import com.contributor.model.enumeration.DevStatus;
 import com.contributor.model.user.User;
 import lombok.*;
-import org.hibernate.annotations.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.*;
 
-import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Builder
-@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -36,15 +35,15 @@ public class Project implements Comparable<Project> {
     @Column(nullable = false, unique = true)
     private String projectId;
 
-    @NaturalId
-    @Column(name = "title", nullable = false, unique = true)
+    @NaturalId(mutable = true)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "intro", nullable = false)
+    @Column(name = "intro", length = 500)
     private String intro;
 
     @Lob
-    @Column(name = "description", nullable = false, length = 1000)
+    @Column(name = "description", nullable = false, length = 5000)
     private String description;
 
     @Builder.Default
@@ -54,14 +53,14 @@ public class Project implements Comparable<Project> {
 
     @Builder.Default
     @Column(name = "published")
-    private Boolean published = false;
+    private Boolean isPublished = false;
 
     @Column(name = "github_url")
     private String github_url;
 
     @Column(name = "created_at", updatable = false, nullable = false)
     @CreationTimestamp
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
@@ -71,7 +70,7 @@ public class Project implements Comparable<Project> {
     private User host;
 
     @Builder.Default
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectContributors> contributors = new ArrayList<>();
 
     @Builder.Default
@@ -79,16 +78,26 @@ public class Project implements Comparable<Project> {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "project", orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    public void addComment(Comment comment) {
-        this.comments.add(comment);
-    }
-
-    public void addContributor(ProjectContributors user) {
-        this.contributors.add(user);
-    }
+    @Builder.Default
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vote> votes = new ArrayList<>();
 
     @Override
     public int compareTo(Project o) {
         return title.compareTo(o.getTitle());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Project project = (Project) o;
+
+        return title != null && title.equals(project.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return title != null ? title.hashCode() : 0;
     }
 }

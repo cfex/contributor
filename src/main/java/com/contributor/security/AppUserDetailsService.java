@@ -1,8 +1,9 @@
 package com.contributor.security;
 
 import com.contributor.dao.UserDao;
-import com.contributor.exception.AccountAlreadyExistsException;
-import com.contributor.exception.EmailVerificationException;
+import com.contributor.exception.errors.AccountAlreadyExistsException;
+import com.contributor.exception.errors.EmailVerificationException;
+import com.contributor.exception.errors.UserNotFoundException;
 import com.contributor.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -23,12 +24,14 @@ public class AppUserDetailsService implements UserDetailsService {
 
     private final UserDao userDao;
 
-    @SneakyThrows(AccountAlreadyExistsException.class)
+    @SneakyThrows
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String s) {
 
-        User user = userDao.findByUsernameOrEmailIgnoreCase(s, s).orElseThrow(AccountAlreadyExistsException::new);
+        User user = userDao.findByUsernameOrEmailIgnoreCase(s, s)
+                .orElseThrow(RuntimeException::new);
+
         if(user.getEmailVerificationStatus()) {
             return AppUserDetailsModel.builder()
                     .id(user.getId())

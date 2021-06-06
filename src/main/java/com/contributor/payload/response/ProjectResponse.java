@@ -8,10 +8,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 
 @Builder
 @AllArgsConstructor
@@ -25,6 +22,7 @@ public class ProjectResponse {
     private String description;
     private DevStatus devStatus;
     private String github_url;
+    private Boolean isPublished;
     private User host;
     private LocalDateTime createdAt;
     @Builder.Default

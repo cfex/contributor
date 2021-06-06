@@ -28,7 +28,7 @@ public class Comment implements Comparable<Comment> {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity author;
 
     @ManyToOne(fetch = FetchType.LAZY)
