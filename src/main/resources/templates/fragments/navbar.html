@@ -1,17 +1,26 @@
 <div th:fragment="navbar">
-    <div class="topnav">
-        <a class="nav-link-left" th:href="@{/}">Home <span class="sr-only">(current)</span></a>
-        <a class="nav-link-left" th:href="@{/projects/explore}">Explore</a>
-        <a class="nav-link-left" th:href="@{/projects/create}">Host</a>
-        <a class="nav-link-right" sec:authorize="!isFullyAuthenticated()"
-           th:href="@{/auth/login}">Login/Sign
-            up</a>
-        <form class="nav-link-right logout" sec:authorize="isFullyAuthenticated()" action="/logout" method="post">
+    <!--    <div class="topnav fixed-top">-->
+    <!--        <a class="nav-link-left" th:href="@{/}">Home <span class="sr-only">(current)</span></a>-->
+    <!--        <a class="nav-link-left" th:href="@{/projects/explore}">Explore</a>-->
+    <!--        <a class="nav-link-left" th:href="@{/projects/create}">Host</a>-->
+    <!--
+     </div>-->
+    <div class="sidebar">
+        <a th:href="@{/}">🏠 home</a>
+        <a th:href="@{/projects/explore}">🔍 explore</a>
+        <a th:href="@{/projects/create}">💻 host</a>
+    </div>
+    <div class="sidebar sidebar-right">
+        <a sec:authorize="!isFullyAuthenticated()"
+           th:href="@{/auth/login}">login</a>
+        <a sec:authorize="!isFullyAuthenticated()"
+           th:href="@{/auth/registration}">register</a>
+        <form sec:authorize="isAuthenticated()" action="/logout" method="post">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-            <button class="base-btn" type="submit">Logout</button>
+            <button class="sidebar-btn" type="submit">🔐 logout</button>
         </form>
-        <a class="nav-link-right" th:href="'/users/' + ${#authentication.getPrincipal().username} + '/profile'"
-           sec:authorize="isFullyAuthenticated()" th:text="${#authentication.getPrincipal().username}">
+        <a href="/users/me" sec:authorize="isAuthenticated()">
+            profile 👽
         </a>
     </div>
 </div>
