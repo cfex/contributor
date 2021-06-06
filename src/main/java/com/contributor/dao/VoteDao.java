@@ -15,5 +15,7 @@ public interface VoteDao extends JpaRepository<Vote, Long> {
 
     void deleteByVoterId(Long id);
 
+    Optional<Vote> deleteByProjectId(Long projectId);
+
     Optional<Vote> findByVoterIdAndProjectId(Long voterId, Long projectId);
 }
