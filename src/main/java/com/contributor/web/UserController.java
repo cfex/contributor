@@ -6,7 +6,6 @@ import com.contributor.security.AppUserDetailsModel;
 import com.contributor.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,13 +27,20 @@ public class UserController {
         return "index";
     }
 
+    @GetMapping("/me")
+    public ModelAndView showLoggedUserProfile(@AuthenticationPrincipal AppUserDetailsModel authUser) {
+        ModelAndView mav = new ModelAndView("users/me");
+        UserDetailsResponse userDetailsResponse = userService.findByUsername(authUser.getUsername());
+        mav.addObject("user", userDetailsResponse);
+
+        return mav;
+    }
+
     @GetMapping("/{username}/profile")
     public ModelAndView showUserProfile(@AuthenticationPrincipal AppUserDetailsModel authUser,
                                         @PathVariable("username") String username) {
         ModelAndView mav = new ModelAndView("users/profile");
-        UserDetailsResponse userDetailsResponse = authUser.getUsername().equals(username)
-                ? userService.findByUsername(username) : userService.findByUsernameAndRetrieveOnlyPublished(username);
-
+        UserDetailsResponse userDetailsResponse = userService.findByUserIdOrUsernameAndRetrieveOnlyPublished(username);
         mav.addObject("user", userDetailsResponse);
         return mav;
     }
