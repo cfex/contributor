@@ -1,6 +1,8 @@
 package com.contributor.service.impl;
 
-import com.contributor.exception.InvalidEmailException;
+import com.contributor.exception.errors.EmailVerificationException;
+import com.contributor.exception.errors.InvalidEmailException;
+import com.contributor.exception.errors.TokenNotFoundException;
 import com.contributor.model.event.RegistrationCompleteEvent;
 import com.contributor.model.verification.VerificationToken;
 import com.contributor.service.EmailVerificationService;
@@ -13,12 +15,11 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
-import java.util.regex.Pattern;
 
 @AllArgsConstructor
 @Service
@@ -31,6 +32,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     @SneakyThrows
     @Override
     @Async
+    @Transactional
     public void sendMail(CompletableFuture<VerificationToken> verificationToken, String recipientEmail, RegistrationCompleteEvent event) {
         LOGGER.info("Creating mail on -> {}", Thread.currentThread().getName());
         if (isEmailValid(recipientEmail)) {
@@ -38,27 +40,26 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
             String confirmationURL = event.getApplicationURL() + "/registrationConfirm?token=" + verificationToken.get().getToken();
             String message = "Please click on the link below:";
             SimpleMailMessage emailMessage = new SimpleMailMessage();
-//            emailMessage.setFrom();
             emailMessage.setTo(recipientEmail);
             emailMessage.setSubject(subject);
             emailMessage.setText(message + "\r\n" + "http://localhost:8080/auth" + confirmationURL);
             mailSender.send(emailMessage);
         } else {
-            throw new InvalidEmailException();
+            throw new TokenNotFoundException("Error creating token. Please try again.");
         }
     }
 
+    @SneakyThrows
     @Override
     public boolean isEmailValid(String email) {
         LOGGER.info("Verifying mail");
-        boolean result = true;
         try {
             InternetAddress emailAddr = new InternetAddress(email);
             emailAddr.validate();
         } catch (AddressException ex) {
-            result = false;
+            throw new InvalidEmailException("Email address is not valid.");
         }
 
-        return result;
+        return true;
     }
 }
