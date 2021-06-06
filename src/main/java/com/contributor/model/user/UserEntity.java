@@ -4,18 +4,19 @@ import com.contributor.model.Authority;
 import com.contributor.model.enumeration.AccountStatus;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.*;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @SuperBuilder
-@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -24,7 +25,7 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE users SET active = 0 WHERE id = ?", check = ResultCheckStyle.COUNT)
 @Where(clause = "active <> 'INACTIVE'")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class UserEntity implements Comparable<UserEntity> {
+public abstract class UserEntity implements Serializable, Comparable<UserEntity> {
 
     @Id
     @Column(nullable = false, updatable = false, unique = true)
@@ -112,4 +113,21 @@ public abstract class UserEntity implements Comparable<UserEntity> {
     public int compareTo(UserEntity o) {
         return this.id.compareTo(o.getId());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result=17;
+        result=31*result+18;
+        result=31*result+(name!=null ? name.hashCode():0);
+        return result;
+    }
+
 }
