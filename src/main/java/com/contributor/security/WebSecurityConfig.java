@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final String[] AVAILABLE_PAGES = {"/", "/auth/registration", "/h2", "/h2/**", "/resources/**", "/projects/explore"};
     private final AppUserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ApplicationAuthFailureHandler authFailureHandler;
@@ -29,13 +30,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/auth/registration", "/h2", "/h2/**", "/resources/**").permitAll()
+                .antMatchers(AVAILABLE_PAGES).permitAll()
                 .antMatchers(HttpMethod.GET, "/auth/registrationConfirm/**").permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .exceptionHandling().accessDeniedPage("/error")
                 .and()
                 .formLogin()
                 .loginPage("/auth/login").permitAll()
                 .defaultSuccessUrl("/projects/explore")
+                .failureHandler(authFailureHandler)
                 .and()
                 .logout()
                 .logoutUrl("/logout").permitAll();
