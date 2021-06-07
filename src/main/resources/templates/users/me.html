@@ -3,11 +3,13 @@
 <head th:replace="fragments/header :: header(~{::link})">
     <link rel="stylesheet" th:href="@{../../css/profile.css}">
     <link rel="stylesheet" th:href="@{../../css/progress.css}">
+    <link rel="stylesheet" th:href="@{../css/sidebar.css}">
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 
 <div class="container-fluid wrapper">
+
     <div class="container cards-index">
         <div class="row">
             <div class="col-3">
@@ -25,34 +27,36 @@
                         <li th:text="'Nickname: ' + ${user.nickname}"></li>
                         <li th:text="'Email: ' + ${user.email}"></li>
                         <li th:text="'School: ' + ${user.school}"></li>
+                        <li class="profile-level" th:text="'Account level: '+ ${user.accountLevel}"></li>
                     </ul>
                 </div>
             </div>
             <div class="col-5">
-                <h3 th:text="${'Points: ' + user.score.value}"></h3>
-                <p th:text="'Account level: '+ ${user.accountLevel}"></p>
+
             </div>
         </div>
         <div class="row">
-            <div class="col-12 published-projects">
-                <div class="table">
-                    <ul class="profile-details-list" th:each="project : ${user.hosted}">
-                        <li>
-                            <h5 th:text="${project.title}"></h5>
-                            <a th:href="@{'/projects/' + ${project.projectId} + '/details'}"
-                               th:text="'#' + ${project.projectId}"></a>
-                            <br>
-                            <small class="devStatus" th:text="${project.devStatus}"></small>
-                            <small class="created_at" th:text="${#temporals.format(project.createdAt, 'dd/MM/yyyy HH:mm')}"></small>
-                            <small th:text="'PUBLISHED: ' + ${project.isPublished}"></small>
-                        </li>
-                    </ul>
+            <div class="grid-container" th:each="project : ${user.hosted}">
+                <div class="grid-item">
+                    <div class="grid-item-content">
+                        <h5 th:text="${project.title}"></h5>
+                        <a th:href="@{'/projects/' + ${project.projectId} + '/details'}"
+                           th:text="'#' + ${project.projectId}"></a>
+                        <small class="devStatus" th:text="${project.devStatus}"></small>
+                        <small class="created_at"
+                               th:text="${#temporals.format(project.createdAt, 'dd/MM/yyyy HH:mm')}"></small>
+                        <small th:text="'PUBLISHED: ' + ${project.isPublished}"></small>
+                        <br>
+                        <button class="base-btn btn-sm btn-blue btn-edit">
+                            <a th:href="@{'/projects/' + ${project.projectId} + '/edit'}">🛠 edit</a>
+                        </button>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
-
 <div th:replace="fragments/footer :: footer"></div>
 
 </body>

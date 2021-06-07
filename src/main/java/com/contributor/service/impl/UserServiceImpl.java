@@ -3,14 +3,14 @@ package com.contributor.service.impl;
 import com.contributor.config.AvatarGenerator;
 import com.contributor.dao.AuthorityDao;
 import com.contributor.dao.UserDao;
-import com.contributor.exception.AccountAlreadyExistsException;
+import com.contributor.exception.errors.AccountAlreadyExistsException;
+import com.contributor.exception.errors.UserNotFoundException;
 import com.contributor.model.Project;
 import com.contributor.model.enumeration.Authorities;
 import com.contributor.model.user.User;
 import com.contributor.model.verification.VerificationToken;
 import com.contributor.payload.response.ProjectResponseMinified;
 import com.contributor.payload.response.UserDetailsResponse;
-import com.contributor.security.AppUserDetailsModel;
 import com.contributor.service.UserService;
 import com.contributor.shared.UserDto;
 import com.contributor.config.ApplicationUtils;
@@ -39,12 +39,14 @@ public class UserServiceImpl implements UserService {
         return modelMapper.map(userDao.findByUsername(username).orElseThrow(), UserDetailsResponse.class);
     }
 
+    @SneakyThrows
     @Override
-    public UserDetailsResponse findByUsernameAndRetrieveOnlyPublished(String userId) {
-        User user = userDao.findByUserId(userId).orElseThrow();
+    public UserDetailsResponse findByUserIdOrUsernameAndRetrieveOnlyPublished(String query) {
+        User user = userDao.findByUserIdOrUsername(query, query)
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
         List<ProjectResponseMinified> hosted = user.getHosted().stream()
-                .filter(Project::getPublished)
+                .filter(Project::getIsPublished)
                 .map(project -> modelMapper.map(project, ProjectResponseMinified.class))
                 .collect(Collectors.toList());
         UserDetailsResponse map = modelMapper.map(user, UserDetailsResponse.class);
@@ -58,7 +60,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDetailsResponse createUser(UserDto userDto) {
         if (userAlreadyExists(userDto.getUsername(), userDto.getEmail())) {
-            throw new AccountAlreadyExistsException();
+            throw new AccountAlreadyExistsException("Account with that username/email already exists!");
         }
         String generatedUUID = utils.generateUUID();
         User userMap = modelMapper.map(userDto, User.class);
@@ -77,13 +79,6 @@ public class UserServiceImpl implements UserService {
         user.setEmailVerificationStatus(true);
         user.setEmailVerificationToken(verificationToken.getToken());
         userDao.save(user);
-    }
-
-    @Override
-    public UserDetailsResponse findByUserId(String userId, AppUserDetailsModel authUser) {
-        User user = userDao.findByUserId(userId).orElseThrow();
-
-        return modelMapper.map(user, UserDetailsResponse.class);
     }
 
     private boolean userAlreadyExists(String username, String email) {

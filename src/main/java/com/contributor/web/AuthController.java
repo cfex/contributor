@@ -1,7 +1,6 @@
 package com.contributor.web;
 
-import com.contributor.exception.AccountAlreadyExistsException;
-import com.contributor.exception.TokenNotFoundException;
+import com.contributor.exception.errors.AccountAlreadyExistsException;
 import com.contributor.model.event.RegistrationCompleteEvent;
 import com.contributor.model.user.User;
 import com.contributor.model.verification.VerificationToken;
@@ -11,6 +10,7 @@ import com.contributor.service.UserService;
 import com.contributor.service.VerificationTokenService;
 import com.contributor.shared.UserDto;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,8 +50,9 @@ public class AuthController {
         return "auth/registration";
     }
 
+    @SneakyThrows
     @PostMapping(value = "/registration")
-    public ModelAndView register(@ModelAttribute("userRegisterRequest") @Valid UserRegisterRequest registerRequest,
+    public ModelAndView register(@Valid @ModelAttribute("userRegisterRequest") UserRegisterRequest registerRequest,
                                  WebRequest request) {
 
         Locale locale = request.getLocale();
@@ -62,7 +62,7 @@ public class AuthController {
             UserDetailsResponse userDetails = userService.createUser(userDtoMap);
             String applicationURL = request.getContextPath();
             eventPublisher.publishEvent(new RegistrationCompleteEvent(userDetails, request.getLocale(), applicationURL));
-        } catch (AccountAlreadyExistsException | TokenNotFoundException exception) {
+        } catch (AccountAlreadyExistsException exception) {
             ModelAndView mav = new ModelAndView("auth/registration", "user", registerRequest);
             mav.addObject("message", messageSource.getMessage("messages.email.error", null, locale));
             return mav;

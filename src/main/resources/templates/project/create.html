@@ -1,47 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head th:replace="fragments/header :: header(~{::link})">
-    <link rel="stylesheet" th:href="@{../css/post-text.css}">
+    <link rel="stylesheet" th:href="@{../css/sidebar.css}">
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<div class="container">
+<div class="container-fluid wrapper">
 
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8">
-            <h2>Host new project</h2>
-            <hr>
-            <form action="" th:object="${projectRequest}" method="POST">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                <input placeholder="Title*" type="text" th:field="*{title}" name="title" id="title"
-                       aria-describedby="title" required>
-                <input placeholder="Intro* (max 500)" type="text" th:field="*{intro}" name="intro" id="intro"
-                       aria-describedby="intro" required>
-                <input placeholder="Github url*" type="text" th:field="*{github_url}" name="github_url"
-                       id="github_url"
-                       aria-describedby="github_url">
+    <div class="container">
 
-                <textarea placeholder="Description* max(1000)" th:field="*{description}" rows="3" name="description"
-                          id="description"
-                          aria-describedby="description" required></textarea>
-
-                <select th:field="*{devStatus}" name="devStatus">
-                    <option value="OPEN">Open for contributions</option>
-                    <option value="INACTIVE">Inactive</option>
-                    <option value="DEVELOPMENT">Development</option>
-                </select>
-                <br>
-                <label for="published">Publish</label>
-                <input type="checkbox" class="chck-box" name="published" th:field="*{published}" value="1" id="published">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <h2>Host new project</h2>
                 <hr>
-                <div>
-                    <button type="submit" class="base-btn btn-lg">Create</button>
-                </div>
-            </form>
+                <form action="" th:object="${projectRequest}" method="POST">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <input placeholder="Title*" type="text" th:field="*{title}" name="title" id="title"
+                           aria-describedby="title" required>
+                    <input placeholder="Intro* (max 500)" type="text" th:field="*{intro}" name="intro" id="intro"
+                           aria-describedby="intro" required>
+                    <input placeholder="Github url*" type="text" th:field="*{github_url}" name="github_url"
+                           id="github_url"
+                           aria-describedby="github_url">
+
+                    <textarea placeholder="Description* max(1000)" th:field="*{description}" rows="3" name="description"
+                              id="description"
+                              aria-describedby="description" required></textarea>
+
+                    <select th:field="*{devStatus}" name="devStatus">
+                        <option value="OPEN">Open for contributions</option>
+                        <option value="INACTIVE">Inactive</option>
+                        <option value="DEVELOPMENT">Development</option>
+                    </select>
+                    <br>
+                    <label for="published">Publish</label>
+                    <input type="checkbox" class="chck-box" name="isPublished" th:field="*{isPublished}" value="1"
+                           id="published">
+                    <hr>
+                    <div>
+                        <button type="submit" class="base-btn btn-lg">Create</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-2"></div>
         </div>
-        <div class="col-2"></div>
     </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>

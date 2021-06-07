@@ -6,26 +6,30 @@
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-3"></div>
-        <div class="col-6">
-            <h1>REGISTER</h1>
-            <form class="reg-form" action="" th:object="${userRegisterRequest}" method="post">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                <input name="name" placeholder="Full name*" type="text" th:field="*{name}" required><br>
-                <input name="username" placeholder="Username*" type="text" th:field="*{username}" required><br>
-                <input name="nickname" placeholder="Nickname*" type="text" th:field="*{nickname}"><br>
-                <input name="email" placeholder="Email*" type="email" th:field="*{email}" required><br>
-                <input name="school" placeholder="School" type="text" th:field="*{school}"><br>
-                <input name="birthDate" type="date" id="birthDate" autocomplete="off" th:field="*{birthDate}" required/>
-                <input placeholder="Password*" type="password" th:field="*{password}"><br>
-                <button class="base-btn btn-lg" type="submit">Create Account</button>
-            </form>
+<div class="container-fluid wrapper">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <h1>REGISTER</h1>
+                <form class="reg-form" action="" th:object="${userRegisterRequest}" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <input name="name" placeholder="Full name*" type="text" th:field="*{name}" required><br>
+                    <input name="username" placeholder="Username*" type="text" th:field="*{username}" required><br>
+                    <input name="nickname" placeholder="Nickname*" type="text" th:field="*{nickname}"><br>
+                    <input name="email" placeholder="Email*" type="email" th:field="*{email}" required><br>
+                    <input name="school" placeholder="School" type="text" th:field="*{school}"><br>
+                    <input name="birthDate" type="date" id="birthDate" autocomplete="off" th:field="*{birthDate}"
+                           required/>
+                    <input placeholder="Password*" type="password" th:field="*{password}"><br>
+                    <button class="base-btn btn-lg" type="submit">Create Account</button>
+                </form>
+            </div>
+            <div class="col-3"></div>
         </div>
-        <div class="col-3"></div>
     </div>
-    <div th:replace="fragments/footer :: footer"></div>
 </div>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

@@ -1,81 +1,95 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head th:replace="fragments/header :: header(~{::link})">
-    <link rel="stylesheet" th:href="@{/css/project.css}">
+    <link rel="stylesheet" th:href="@{/css/details.css}">
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
-<div class="container">
-    <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8">
-            <h2 th:text="${project.title}">Project</h2>
-            <small class="created_at" th:text="${project.createdAt}"></small>
-            <small>
-                <a th:href="${project.github_url}" target="_blank">Github</a>
-            </small>
-            <div class="contributors">
-                <h4>Contributors</h4>
-                <th:block th:each="user : ${project.contributors}">
-                    <button class="base-btn btn-sm">
+
+<div class="container-fluid wrapper">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <h2 th:text="${project.title}">Project</h2>
+                <small class="created_at" th:text="${#temporals.format(project.createdAt, 'dd/MM/yyyy HH:mm')}"></small>
+                <p class="description-area" th:text="${project.description}">Description</p>
+                <div class="join">
+                    <form action="#" th:action="@{'/projects/contribution/' + ${project.projectId} + '/request'}"
+                          method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button class="base-btn" type="submit" name="contributionRequest">support ❤️</button>
+                    </form>
+                    <button class="base-btn btn-blue">
+                        <a th:href="${project.github_url}" target="_blank">join 🎫</a>
+                    </button>
+                    <form action="#" th:action="@{'/vote/' + ${project.projectId} + '/upvote'}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button class="base-btn btn-blue" th:text="'👍' + ${votesCount != null ? votesCount : 0}"
+                                type="submit"
+                                name="upvote">
+                        </button>
+                    </form>
+                </div>
+                <div class="contributors">
+                    <h3>supporters & contributors</h3>
+                    <th:block th:each="user : ${project.contributors}">
                         <a th:href="'/users/' + ${user.contributor.userId} + '/profile'"
                            th:text="${user.contributor.username}"></a>
-                    </button>
-                </th:block>
-            </div>
-            <p class="description-area" th:text="${project.description}">Description</p>
-            <p th:text=" ${votesCount}"></p>
-            <div class="row">
-                <form action="#" th:action="@{'/vote/' + ${project.projectId} + '/upvote'}" method="post">
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                    <button class="base-btn" type="submit" name="upvote">Upvote</button>
-                </form>
-                <form action="#" th:action="@{'/contribution/' + ${project.projectId} + '/request'}" method="post">
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                    <button class="base-btn" type="submit" name="contributionRequest">Contribute</button>
-                </form>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-2 project_host">
-                    <div class="host-avatar">
-                        <img th:src="${project.host.avatar}" alt="Avatar">
+                    </th:block>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-2">
+                        <div class="host-avatar">
+                            <a th:href="@{'/users/' + ${project.host.userId} + '/profile'}">
+                                <img th:src="${project.host.avatar}" alt="Avatar">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <p class="host_bio" th:text="${project.host.name}"></p>
+                        <small th:text="${project.host.bio}"></small>
                     </div>
                 </div>
-                <div class="col-8 project_host">
-                    <p class="host_bio" th:text="${project.host.name}"></p>
-                    <small th:text="${project.host.bio}"></small>
-                </div>
-            </div>
-            <div class="comments">
-                <br>
-                <form th:action="@{'/projects/' + ${project.projectId} + '/comment'}" method="post">
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                    <textarea th:field="${commentRequest.text}" placeholder="Comment.."
-                              name="text" id="text" rows="3">
+                <div class="comments">
+                    <br>
+                    <form th:action="@{'/projects/' + ${project.projectId} + '/comment'}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <textarea th:field="${commentRequest.text}" placeholder="Comment.."
+                                  name="text" id="text" rows="3">
                         </textarea>
-                    <button type="submit" class="base-btn">Comment</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="col-2"></div>
-    <div class="comment" th:each="comment : ${project.comments}">
-        <div class="row">
-            <div class="col-1">
-                <div class="host-avatar sm">
-                    <img th:src="${comment.author.avatar}"/>
+                        <button type="submit" class="base-btn">Comment</button>
+                    </form>
                 </div>
+                <div class="comments-section">
+                    <div th:each="comment : ${project.comments}" class="row comment">
+                        <div class="col-2">
+                            <div class="host-avatar sm">
+                                <a th:href="@{'/users/' + ${comment.author.userId} + '/profile'}">
+                                    <img th:src="${comment.author.avatar}"/>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-10">
+                            <p class="comment-text" th:text="${comment.text}">text</p>
+                            <small>
+                                <a th:href="@{'/users/' + ${comment.author.userId} + '/profile'}">
+                                    <span th:text="${comment.author.username}"></span>
+                                </a>
+                            </small>
+                            <small class="comment-creation"
+                                   th:text="${#temporals.format(comment.createdAt, 'dd-MM-yyyy HH:mm')}"></small>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="col-8">
-                <p class="comment-text" th:text="${comment.text}">text</p>
-                <small class="comment-creation"
-                       th:text="${#temporals.format(comment.createdAt, 'dd-MM-yyyy HH:mm')}"></small>
-            </div>
+            <div class="col-2"></div>
         </div>
     </div>
 </div>
-
 <div th:replace="fragments/footer :: footer"></div>
 
 </body>

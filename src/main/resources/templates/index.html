@@ -5,47 +5,40 @@
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
-
-<div class="container">
-    <div class="row">
-        <div class="search-container">
-            <form action="/projects/search" method="GET">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                <div class="row">
-                    <div class="col-10">
-                        <input type="text" name="keyword" placeholder="Search.." required>
+<div class="container-fluid wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="search-container">
+                <form action="/projects/search" method="GET">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <div class="row">
+                        <div class="col-10">
+                            <input type="text" name="keyword" placeholder="Search.." required>
+                        </div>
+                        <button class="btn-square" type="submit">🔍</button>
                     </div>
-                    <button class="base-btn" type="submit"><i class="fa fa-search"></i></button>
-                </div>
-            </form>
-            <p class="explore">Explore, connect, contribute..</p>
-        </div>
-    </div>
-</div>
-
-
-<div class="container-fluid popular-wrapper">
-    <h2 class="popular-title">Popular this week
-        <small class="small-text">(projects with most likes in past 7 days)</small></h2>
-    <div class="row">
-        <th:block th:each="project : ${projects}">
-            <div class="popular-card">
-                <a th:href="'/projects/' + ${project.projectId} + '/details'" class="popular-title"
-                   th:text="${project.title}">
-                </a>
-                <p th:text="${project.intro}"></p>
+                </form>
+                <p class="explore">Explore, connect, contribute..</p>
             </div>
-        </th:block>
-        <div class="popular-card">
-            <button class="base-btn btn-circle">
-                <a href="/projects/explore">
-                    <span class="spec-char">Explore</span>
-                </a>
-            </button>
+        </div>
+    </div>
+
+
+    <div class="container-fluid popular-wrapper">
+        <h2 class="popular-title">Popular this week</h2>
+        <div class="row">
+            <th:block th:each="project : ${projects}">
+                <div class="popular-card">
+                    <a th:href="'/projects/' + ${project.projectId} + '/details'" class="popular-title"
+                       th:text="${project.title}">
+                    </a>
+                    <p th:text="${project.intro}"></p>
+                    <div class="delimiter"></div>
+                </div>
+            </th:block>
         </div>
     </div>
 </div>
-
 <div th:replace="fragments/footer :: footer"></div>
 
 </body>
