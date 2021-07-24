@@ -1,6 +1,6 @@
 package com.contributor.service;
 
-import com.contributor.exception.errors.ProjectAlreadyExistsException;
+import com.contributor.exception.ProjectAlreadyExistsException;
 import com.contributor.payload.request.ProjectUpdateRequest;
 import com.contributor.payload.response.ProjectResponse;
 import com.contributor.payload.response.ProjectResponseMinified;
@@ -21,7 +21,7 @@ public interface ProjectService {
 
     void updateProject(ProjectUpdateRequest updateRequest, String projectId);
     
-    CompletableFuture<ProjectResponse> createProject(AppUserDetailsModel host, ProjectDto projectDto) throws ProjectAlreadyExistsException;
+    CompletableFuture<ProjectResponse> createProject(AppUserDetailsModel host, ProjectDto projectDto);
 
     void requestContribution(AppUserDetailsModel auth, String projectId);
 

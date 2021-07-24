@@ -1,6 +1,6 @@
 package com.contributor.web;
 
-import com.contributor.exception.errors.AccountAlreadyExistsException;
+import com.contributor.exception.AccountAlreadyExistsException;
 import com.contributor.model.event.RegistrationCompleteEvent;
 import com.contributor.model.user.User;
 import com.contributor.model.verification.VerificationToken;
@@ -62,7 +62,7 @@ public class AuthController {
             UserDetailsResponse userDetails = userService.createUser(userDtoMap);
             String applicationURL = request.getContextPath();
             eventPublisher.publishEvent(new RegistrationCompleteEvent(userDetails, request.getLocale(), applicationURL));
-        } catch (AccountAlreadyExistsException exception) {
+        } catch (Exception e) {
             ModelAndView mav = new ModelAndView("auth/registration", "user", registerRequest);
             mav.addObject("message", messageSource.getMessage("messages.email.error", null, locale));
             return mav;

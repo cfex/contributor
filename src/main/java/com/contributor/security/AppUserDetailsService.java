@@ -1,9 +1,7 @@
 package com.contributor.security;
 
 import com.contributor.dao.UserDao;
-import com.contributor.exception.errors.AccountAlreadyExistsException;
-import com.contributor.exception.errors.EmailVerificationException;
-import com.contributor.exception.errors.UserNotFoundException;
+import com.contributor.exception.EmailVerificationException;
 import com.contributor.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;

@@ -1,6 +1,5 @@
 package com.contributor.service;
 
-import com.contributor.exception.errors.AccountAlreadyExistsException;
 import com.contributor.model.user.User;
 import com.contributor.model.verification.VerificationToken;
 import com.contributor.payload.response.UserDetailsResponse;
@@ -11,7 +10,7 @@ public interface UserService {
 
     UserDetailsResponse findByUserIdOrUsernameAndRetrieveOnlyPublished(String username);
 
-    UserDetailsResponse createUser(UserDto userDto) throws AccountAlreadyExistsException;
+    UserDetailsResponse createUser(UserDto userDto);
 
     void verifyUserEmail(User user, VerificationToken verificationToken);
 }

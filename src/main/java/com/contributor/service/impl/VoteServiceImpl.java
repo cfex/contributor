@@ -3,7 +3,7 @@ package com.contributor.service.impl;
 import com.contributor.dao.ProjectDao;
 import com.contributor.dao.UserDao;
 import com.contributor.dao.VoteDao;
-import com.contributor.exception.errors.UserNotFoundException;
+import com.contributor.exception.UserNotFoundException;
 import com.contributor.model.Project;
 import com.contributor.model.Vote;
 import com.contributor.model.enumeration.ScoreValue;

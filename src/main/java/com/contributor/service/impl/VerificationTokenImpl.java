@@ -2,9 +2,9 @@ package com.contributor.service.impl;
 
 import com.contributor.dao.UserDao;
 import com.contributor.dao.VerificationTokenDao;
-import com.contributor.exception.errors.NoTokenFoundException;
-import com.contributor.exception.errors.TokenNotFoundException;
-import com.contributor.exception.errors.UserNotFoundException;
+import com.contributor.exception.NoTokenFoundException;
+import com.contributor.exception.TokenNotFoundException;
+import com.contributor.exception.UserNotFoundException;
 import com.contributor.model.user.User;
 import com.contributor.model.verification.VerificationToken;
 import com.contributor.payload.response.UserDetailsResponse;
@@ -39,13 +39,13 @@ public class VerificationTokenImpl implements VerificationTokenService {
     @SneakyThrows
     @Override
     public VerificationToken findByToken(String token) {
-        return verificationTokenDao.findByToken(token).orElseThrow(TokenNotFoundException::new);
+        return verificationTokenDao.findByToken(token).orElseThrow(() -> new TokenNotFoundException("Token not found."));
     }
 
     @SneakyThrows
     @Override
     public VerificationToken findByUser(User user) {
-        return verificationTokenDao.findByUser(user).orElseThrow(TokenNotFoundException::new);
+        return verificationTokenDao.findByUser(user).orElseThrow(() -> new TokenNotFoundException("Token not found."));
     }
 
     @SneakyThrows
@@ -68,7 +68,7 @@ public class VerificationTokenImpl implements VerificationTokenService {
     @SneakyThrows
     @Override
     public VerificationToken getVerificationToken(String token) {
-        return verificationTokenDao.findByToken(token).orElseThrow(NoTokenFoundException::new);
+        return verificationTokenDao.findByToken(token).orElseThrow(() -> new NoTokenFoundException("Token not found."));
     }
 
     private Date calculateExpirationDate(int expirationTimeInMinutes) {

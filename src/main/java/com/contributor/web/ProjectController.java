@@ -1,6 +1,6 @@
 package com.contributor.web;
 
-import com.contributor.exception.errors.ProjectAlreadyExistsException;
+import com.contributor.exception.ProjectAlreadyExistsException;
 import com.contributor.model.event.ContributionRequestEvent;
 import com.contributor.payload.request.CommentRequest;
 import com.contributor.payload.request.ProjectRequest;

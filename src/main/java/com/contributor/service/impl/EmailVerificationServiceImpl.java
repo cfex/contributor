@@ -1,8 +1,7 @@
 package com.contributor.service.impl;
 
-import com.contributor.exception.errors.EmailVerificationException;
-import com.contributor.exception.errors.InvalidEmailException;
-import com.contributor.exception.errors.TokenNotFoundException;
+import com.contributor.exception.InvalidEmailException;
+import com.contributor.exception.TokenNotFoundException;
 import com.contributor.model.event.RegistrationCompleteEvent;
 import com.contributor.model.verification.VerificationToken;
 import com.contributor.service.EmailVerificationService;
