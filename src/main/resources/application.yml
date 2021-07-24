@@ -21,7 +21,7 @@ spring:
   thymeleaf:
     cache: false
   profiles:
-    active:
+    active: dev
   mail:
     host: smtp.gmail.com
     port: 587
