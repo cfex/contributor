@@ -32,4 +32,6 @@ spring:
           starttls:
             enable: true
     test-connection: false
+  main:
+    allow-bean-definition-overriding: true
 
